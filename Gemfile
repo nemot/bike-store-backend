@@ -47,3 +47,5 @@ group :development, :test do
 end
 
 
+
+gem "acts-as-taggable-on", "~> 12.0"
