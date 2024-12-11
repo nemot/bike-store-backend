@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_09_155425) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_11_104809) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -28,12 +28,30 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_09_155425) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "line_items", force: :cascade do |t|
+    t.integer "product_id"
+    t.string "holder_type"
+    t.bigint "holder_id"
+    t.integer "quantity"
+    t.decimal "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["holder_type", "holder_id"], name: "index_line_items_on_holder"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.float "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "stock_quantity", default: 0, null: false
+  end
+
+  create_table "rules", force: :cascade do |t|
+    t.jsonb "conditions", default: {}, null: false
+    t.jsonb "effects", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "taggings", force: :cascade do |t|

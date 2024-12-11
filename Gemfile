@@ -44,8 +44,15 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  gem "pry", "~> 0.15.0"
 end
 
 
 
 gem "acts-as-taggable-on", "~> 12.0"
+
+gem "dry-initializer", "~> 3.1"
+
+gem "dry-monads", "~> 1.6"
+
+gem "dry-struct", "~> 1.6"
