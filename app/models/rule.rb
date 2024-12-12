@@ -30,10 +30,6 @@ class Rule < ApplicationRecord
     klass.respond_to?(:rule_subjects) && conditions.keys.all? { klass.rule_subjects.key?(_1) }
   end
 
-  # def apply!(instance)
-  #   Rules::ConditionsMatchingService.new(rule: self, instance:).match?
-  # end
-
   private
 
   def conditions_validator
@@ -44,6 +40,7 @@ class Rule < ApplicationRecord
       next(errors.add(:conditions, "'#{func}' is not a valid function allowed")) if @@subjects.dig(subject, 0).exclude?(func)
     end
   end
+
 
   def effects_validator
   end

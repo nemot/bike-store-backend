@@ -8,7 +8,9 @@ module Rules
       return false unless rule.applicable_for?(instance)
 
       rule.conditions.all? do |subject, (operator, value)|
-        obj = subject.split(".")[1..].reduce(instance) { |obj, m| obj = obj.public_send(m); obj }
+        obj = subject.split(".")[1..].reduce(instance) { |obj, m| break "NOT_FOUND" if obj.nil?; obj = obj.public_send(m); obj }
+        next if obj == "NOT_FOUND"
+
         public_send(operator, obj, value)
       end
     end

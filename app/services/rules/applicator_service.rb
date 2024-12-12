@@ -4,26 +4,38 @@ module Rules
     attribute :instance, Types::Any
 
     def call
-      validate_conditions!
-      validate_effects!
+      apply_effects! if ::Rules::ConditionsMatchingService.new(rule:, instance:).match?
 
-      return Failure(self.errors) if self.errors.any?
-
-      rule = Rule.new(conditions:, effects:)
-      rule.save ? Success(rule) : Failure(rule.errors.full_messages)
+      instance.save ? Success(instance) : Failure(instance.errors.full_messages)
     end
 
     private
 
-    def validate_conditions!
-      # conditions.each do |subject, operation|
-      #   subject_kind, field = *subject.split('.')
-      #   sibject_class
-      #   self.errors.push("#{subject_kind} does not provide :#{field} field")
-      #   func, arguments = *operation
-      #   self.errors << "#{func} is not allowed on #{subject_kind}" if
+    def apply_effects!
+      rule.effects.each do |subject, (operation, value)|
+        obj = subject.split(".")[1..].reduce(instance) { |obj, m| obj = obj.public_send(m);  obj }
+        send(operator, obj, value)
+      end
+    end
 
-      # end
+    def reduce_by(obj, value)
+      obj -= value.to_f.round(2)
+    end
+
+    def reduce_by_percent(obj, value)
+      obj -= (obj.to_f/100)*value.to_f.round(2)
+    end
+
+    def increase_by(obj, value)
+      obj += value.to_f.round(2)
+    end
+
+    def increase_by_percent(obj, value)
+      obj += (obj.to_f/100)*value.to_f.round(2)
+    end
+
+    def set(obj, value)
+      obj = value
     end
   end
 end
