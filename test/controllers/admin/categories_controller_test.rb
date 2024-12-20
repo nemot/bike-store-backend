@@ -1,6 +1,6 @@
 require "test_helper"
 
-class CustomBicycleProductTest < ActiveSupport::TestCase
+class Admin::CategoriesControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

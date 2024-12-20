@@ -1,6 +1,6 @@
 class CustomBicycle < ApplicationRecord
-  has_many :custom_bicycle_products
-  has_many :products, through: :custom_bicycle_products
+  has_many :line_items, as: :holder
+  has_many :products, through: :line_items
 
   has_one :frame, -> { joins(:product).merge(Product.for_category("bicycle parts -> frames")) }, as: :holder, class_name: "LineItem"
   has_one :wheels, -> { joins(:product).merge(Product.for_category("bicycle parts -> wheels")) }, as: :holder, class_name: "LineItem"
