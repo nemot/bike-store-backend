@@ -16,7 +16,7 @@ Each product is represented by the Product model with attributes such as name, d
 
 A product can belong to multiple categories. Initially, I implemented categories as tags, but looking back, I would now replace them with standard models using Single Table Inheritance (STI).
 
-Categories
+# Categories
 
 Let’s talk about categories. Since categories are implemented as tags (using the acts-as-taggable-on gem), I decided to wrap them in a Category model, inheriting from ActsAsTaggableOn::Tag, which narrows the scope. Categories can also be nested, and to handle this, I devised a simple scheme by encoding the hierarchy in the category name (e.g., "Parent Category -> Child1 -> Child2"). This approach simplifies rule creation (discussed later) but introduces challenges in representing data for the frontend.
 
@@ -43,20 +43,20 @@ Once a custom bicycle is fully assembled, it generates a single line_item, which
 Now let’s talk about rules. To implement complex conditions, I created a Rule model (Rule(condition, effect)). It essentially consists of two parts: the conditions under which it is triggered and the effect it applies.
 
 Both conditions and effect are stored in JSON format, for example:
-{"bicycle.frame.product.name"=>["starts_with", "Somethign"], "bicycle.frame.product.category_list"=>["includes", "Bicycle Parts -> Frames -> Golden"] } and {"bicycle.wheels.price"=>["increase_by_percent", "20"], ... }
+`{"bicycle.frame.product.name"=>["starts_with", "Somethign"], "bicycle.frame.product.category_list"=>["includes", "Bicycle Parts -> Frames -> Golden"] }` and `{"bicycle.wheels.price"=>["increase_by_percent", "20"], ... }`
 
 Each element of this JSON is a simple pattern of subject operation value.
 
-The list of available subjects is defined by specifying ruleable_as "subject_name", %w[list of fields] in the relevant model.
+The list of available subjects is defined by specifying ruleable_as `"subject_name", %w[list of fields]` in the relevant model.
 For instance:
-  • In the CustomBicycle model, it’s ruleable_as "bicycle", %w[id frame wheels chain fork pedals brakes optional_products services].
-  • In the LineItem model, it’s ruleable_as "line_item", %w[price quantity product].
+  • In the CustomBicycle model, it’s `ruleable_as "bicycle", %w[id frame wheels chain fork pedals brakes optional_products services]`
+  • In the LineItem model, it’s `ruleable_as "line_item", %w[price quantity product]`
 
 This approach gathers a list of possible subjects, supported operations, and the scopes of allowable values. The logic for generating this data is encapsulated in app/models/concerns/rule_subject.rb and is accessible via Rule.subjects.
 
 Here’s an example of what it looks like:
 
-
+```
 {
 "product"=>[["is"], Product(id: integer, name: string, price: float, created_at: datetime, updated_at: datetime, stock_quantity: integer, description: text, category_list: )],
  "product.name"=>[["=", "starts_with", "ends_with", "include"], ActiveModel::Type::String],
@@ -71,7 +71,7 @@ Here’s an example of what it looks like:
  "line_item.product.categories"=>[["include", "exclude"], ActsAsTaggableOn::Tag(id: integer, name: string, created_at: datetime, updated_at: datetime, taggings_count: integer)],
  ...
  }
-
+```
 
  This structure allows sending precise directives to the admin frontend, where they populate dropdown menus with available subjects, operations, and valid values.
 
