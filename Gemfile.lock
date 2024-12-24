@@ -213,7 +213,7 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.9)
-    pry (0.15.0)
+    pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
     psych (5.2.1)
@@ -364,7 +364,7 @@ DEPENDENCIES
   image_processing (~> 1.13)
   kamal
   pg (~> 1.1)
-  pry (~> 0.15.0)
+  pry (~> 0.15.2)
   puma (>= 5.0)
   rack-cors
   rails (~> 8.0.0)
