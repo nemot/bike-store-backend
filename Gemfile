@@ -52,7 +52,7 @@ end
 
 gem "acts-as-taggable-on", "~> 12.0"
 
-gem "dry-initializer", "~> 3.1"
+gem "dry-initializer", "~> 3.2"
 
 gem "dry-monads", "~> 1.6"
 
