@@ -56,7 +56,7 @@ gem "dry-initializer", "~> 3.1"
 
 gem "dry-monads", "~> 1.6"
 
-gem "dry-struct", "~> 1.6"
+gem "dry-struct", "~> 1.8"
 
 gem "image_processing", "~> 1.13"
 
